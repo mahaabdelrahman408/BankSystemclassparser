@@ -4,6 +4,7 @@
 #include <iterator>
 #include <string>
 #include <sstream>
+#include<fstream>
 
 
 using namespace std;
@@ -11,7 +12,7 @@ using namespace std;
 class Person
 {
 private:
-    int id;
+    long id;
     string name;
     string password;
     bool isAliphatic(string s)
@@ -27,7 +28,7 @@ private:
         return true;
     }
 public:
-    void setId(int i)
+    void setId(long i)
     {
         id=i;
     }
@@ -61,7 +62,7 @@ public:
             setPassword(password);
         }
     }
-    int getId()
+    long getId()
     {
         return id;
     }
@@ -147,6 +148,27 @@ public:
         cout <<"Balance : "<<getBalance() << endl;
         cout<<"Password : "<<getPassword()<<endl;
     }
+
+     void saveToFile() const {
+        ofstream file("clients.txt", ios::app);
+        if (file.is_open()) {
+            file << getId() << "&" << getName() << "&" << getPassword() << "&" << getBalance() << endl;
+            file.close();
+        }
+    }
+
+    static Client readFromFile(long clientId) {
+        ifstream file("clients.txt");
+        string line;
+        Client client;
+        while (getline(file, line)) {
+            client = parser::parseToClient(line);
+            if (client.getId() == clientId) {
+                return client;
+            }
+        }
+        return {};
+    }
 };
 
 
@@ -181,6 +203,27 @@ public:
         cout << "Password: " << getPassword() <<endl;
         cout << "Salary: " << getSalary() << endl;
     }
+    
+    void saveToFile() const {
+        ofstream file("employee.txt", ios::app);
+        if (file.is_open()) {
+            file << getId() << "&" << getName() << "&" << getPassword() << "&" << getSalary() << endl;
+            file.close();
+        }
+    }
+
+    static Employee readFromFile(long id) {
+        Employee employee;
+        ifstream file("employee.txt");
+
+        for (string line; getline(file, line);) {
+            employee = parser::parseToEmployee(line);
+            if (employee.getId() == id) {
+                return employee;
+            }
+        }
+
+        return Employee();
 };
 
 
@@ -194,6 +237,30 @@ public:
         cout <<"ID : "<< getId() << endl;
         cout <<"Password : "<<getPassword()<< endl;
         cout<<"Salary : "<<getSalary()<<endl;
+    }
+
+    void saveToFile() const {
+        ofstream file("admin.txt", ios::app);
+        if (file.is_open()) {
+            file << getId() << "&" << getName() << "&" << getPassword() << "&" << getSalary() << endl;
+            file.close();
+        }
+    }
+
+    static Admin readFromFile(long id) {
+        Admin admin;
+        ifstream file("admin.txt");
+        string line;
+
+        while (getline(file, line)) {
+            admin = parser::parseToAdmin(line);
+
+            if (admin.getId() == id) {
+                return admin;
+            }
+        }
+
+        return Admin();
     }
 };
 class parser
@@ -265,6 +332,7 @@ int main()
     c.transferTo(100,ob);
     c.checkBalance();
     c.display();
+     c.saveToFile();
 
     Employee f;
     f.setName("John");
@@ -272,6 +340,7 @@ int main()
     f.setPassword("password123");
     f.setSalary(9000);
     f.display();
+    f.saveToFile();
 
     Admin a;
     a.setId(1234566879);
@@ -279,5 +348,15 @@ int main()
     a.setPassword("14567859");
     a.setSalary(70000);
     a.display();
+    a.saveToFile();
+
+    Client clientFromFile = Client::readFromFile(30505195);
+    Employee employeeFromFile = Employee::readFromFile(1001);
+    Admin adminFromFile = Admin::readFromFile(2002);
+
+    clientFromFile.display();
+    employeeFromFile.display();
+    adminFromFile.display();
+
     return 0;
 }
