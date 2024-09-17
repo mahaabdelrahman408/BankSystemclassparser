@@ -10,6 +10,8 @@
       "externalConsole": true,
       "cwd": "c:/Users/dell/Desktop/Bank system/phase2/BankSystemclassparser",
       "program": "c:/Users/dell/Desktop/Bank system/phase2/BankSystemclassparser/build/Debug/outDebug",
+      "cwd": "c:/Users/dell/Desktop/Bank system/phase2/phase2/BankSystemclassparser/.vscode/BankSystemclassparser/BankSystemclassparser",
+      "program": "c:/Users/dell/Desktop/Bank system/phase2/phase2/BankSystemclassparser/.vscode/BankSystemclassparser/BankSystemclassparser/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
