@@ -152,9 +152,10 @@ public:
 
 class Employee:public Person
 {
-private:
-    double salary;
-public:
+  private:
+      double salary;
+      vector<Client>client;
+  public:
     void setSalary(double s)
     {
         if(s<5000)
@@ -164,8 +165,7 @@ public:
             cin>>s;
             setSalary(s);
         }
-        else
-        {
+        else{
             salary=s;
         }
     }
@@ -173,7 +173,7 @@ public:
     {
         return salary;
     }
-    void display()
+    void display() 
     {
         cout << "Employee Information:" << endl;
         cout << "Name: " << getName() << endl;
@@ -181,20 +181,84 @@ public:
         cout << "Password: " << getPassword() <<endl;
         cout << "Salary: " << getSalary() << endl;
     }
+    void addClient(Client& client){
+         this->client.push_back(client);
+    }
+    Client* searchClient(int id){
+    for(int i=0;i<client.size();i++){
+        if(client[i].getId()==id){
+            return &client[i];
+        }
+    }
+    return NULL;
+    }
+    void listClient(){
+          for (int i = 0; i < client.size(); i++) {
+                cout<<    "listClient"   <<endl;
+            cout << "ID: " << client[i].getId() 
+                      << ", Name: " << client[i].getName() 
+                      << ", Balance: " << client[i].getBalance() 
+                      << endl;
+        }
+    }
+     void editClient(int id, string name, string password, double balance){
+            Client* client = searchClient(id); 
+        if (client != NULL) {
+            client->setName(name);
+            client->setPassword(password);
+            client->setBalance(balance);
+            cout << "Client updated successfully!" <<endl;
+        } else {
+            cout << "Client not found!" <<endl;
+        }
+    }
 };
+
 
 
 class Admin:public Employee
 {
-public:
-    void display()
-    {
+private:
+    vector<Employee> employees;
+  public:
+      void display()
+      {
         cout<<"Admin Information : "<<endl;
-        cout <<"Name : "<<getName()<< endl;
-        cout <<"ID : "<< getId() << endl;
-        cout <<"Password : "<<getPassword()<< endl;
-        cout<<"Salary : "<<getSalary()<<endl;
+          cout <<"Name : "<<getName()<< endl;
+          cout <<"ID : "<< getId() << endl;
+          cout <<"Password : "<<getPassword()<< endl;
+          cout<<"Salary : "<<getSalary()<<endl;
+      }
+       void addEmployee(Employee& employee) {
+        employees.push_back(employee);
     }
+    Employee* searchEmployee(int id) {
+    for (int i = 0; i < employees.size(); i++) {
+        if (employees[i].getId() == id) {
+            return &employees[i];  
+        }
+    }
+    return NULL;  
+}
+
+ void editEmployee(int id, string name, string password, double salary) {
+    Employee* employee = searchEmployee(id);  
+    if (employee != NULL) {
+        employee->setName(name);
+        employee->setPassword(password);
+        employee->setSalary(salary);
+        cout << "Employee updated successfully!" << endl;
+    } else {
+        cout << "Employee not found!" << endl;
+    }
+}
+   void listEmployee() {
+    for (int i = 0; i < employees.size(); i++) {
+        cout << "Employee ID: " << employees[i].getId() << endl;
+        cout << "Employee Name: " << employees[i].getName() << endl;
+        cout << "Employee Salary: " << employees[i].getSalary() << endl;
+    }
+}
 };
 class parser
 {
