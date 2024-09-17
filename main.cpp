@@ -6,6 +6,7 @@
 #include <sstream>
 #include<fstream>
 
+
 using namespace std;
 
 class Person
@@ -210,6 +211,8 @@ public:
         cout << "Salary: " << getSalary() << endl;
     }
       void saveToFile() const {
+    
+    void saveToFile() const {
         ofstream file("employee.txt", ios::app);
         if (file.is_open()) {
             file << getId() << "&" << getName() << "&" << getPassword() << "&" << getSalary() << endl;
@@ -248,6 +251,7 @@ public:
         cout <<"Password : "<<getPassword()<< endl;
         cout<<"Salary : "<<getSalary()<<endl;
     }
+
     void saveToFile() const {
         ofstream file("admin.txt", ios::app);
         if (file.is_open()) {
@@ -379,7 +383,105 @@ public:
         }
     }
 };
+class FileManager {
+private:
+    const string clientsFilePath = "clients.txt";
+    const string employeesFilePath = "employees.txt";
+    const string adminsFilePath = "admins.txt";
 
+    void writeToFile(const string& filePath, const string& data);
+    std::vector<std::string> readFromFile(const string& filePath);
+
+public:
+    void addClient(const Client& client);
+    void addEmployee(const Employee& employee);
+    void addAdmin(const Admin& admin);
+
+    std::vector<Client> getAllClients();
+    std::vector<Employee> getAllEmployees();
+    std::vector<Admin> getAllAdmins();
+
+    void removeAllClients();
+    void removeAllEmployees();
+    void removeAllAdmins();
+};
+
+void FileManager::addClient(const Client& client) {
+    string clientData = client.getName() + "," + to_string(client.getId()) + "," + client.getPassward() + "," + to_string(client.getBalance());
+    writeToFile(clientsFilePath, clientData);
+}
+
+void FileManager::writeToFile(const string& filePath, const string& data) {
+    ofstream file(filePath, ios::app);
+    if (file.is_open()) {
+        file << data << endl;
+        file.close();
+    } else {
+        cerr << "Not found this file" << filePath << endl;
+    }
+}
+
+std::vector<std::string> FileManager::readFromFile(const string& filePath) {
+    std::vector<std::string> data;
+    ifstream file(filePath);
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            data.push_back(line);
+        }
+        file.close();
+    } else {
+        cerr << "Error opening file: " << filePath << endl;
+    }
+    return data;
+}
+
+    void writeToFile(const string& filePath, const string& data);
+    std::vector<std::string> readFromFile(const string& filePath);
+
+public:
+    void addClient(const Client& client);
+    void addEmployee(const Employee& employee);
+    void addAdmin(const Admin& admin);
+
+    std::vector<Client> getAllClients();
+    std::vector<Employee> getAllEmployees();
+    std::vector<Admin> getAllAdmins();
+
+    void removeAllClients();
+    void removeAllEmployees();
+    void removeAllAdmins();
+};
+
+void FileManager::addClient(const Client& client) {
+    string clientData = client.getName() + "," + to_string(client.getId()) + "," + client.getPassward() + "," + to_string(client.getBalance());
+    writeToFile(clientsFilePath, clientData);
+}
+
+void FileManager::writeToFile(const string& filePath, const string& data) {
+    ofstream file(filePath, ios::app);
+    if (file.is_open()) {
+        file << data << endl;
+        file.close();
+    } else {
+        cerr << "Not found this file" << filePath << endl;
+    }
+}
+
+std::vector<std::string> FileManager::readFromFile(const string& filePath) {
+    std::vector<std::string> data;
+    ifstream file(filePath);
+    if (file.is_open()) {
+        string line;
+        while (getline(file, line)) {
+            data.push_back(line);
+        }
+        file.close();
+    } else {
+        cerr << "Error opening file: " << filePath << endl;
+    }
+    return data;
+}
 
 
 
@@ -398,6 +500,7 @@ int main()
     c.checkBalance();
     c.display();
     c.saveToFile();
+     c.saveToFile();
 
     Employee f;
     f.setName("John");
@@ -427,5 +530,9 @@ int main()
 
     cout << "Admins from file:" << endl;
     FilesHelper::getAdmins();
+     FileManager fileManager;
+Client client;
+fileManager.addClient(client);
+
     return 0;
 }
